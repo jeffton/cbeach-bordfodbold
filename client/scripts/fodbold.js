@@ -5,6 +5,7 @@ $(document).ready(function() {
   socket.on('state', function(state) {
     showPlayers(state);
     updateUI(state);
+    setTitle(state);
     playSound(state);
   });
   
@@ -35,6 +36,20 @@ function updateUI(state) {
 function playSound(state) {
   if (state.notify) {
     $('#sound').trigger("play");
+  }
+}
+
+function setTitle(state) {
+  switch (state.players.length) {
+    case 0: 
+      document.title = "Bordfodbold @ cBeach";
+      break;
+    case 1:
+      document.title = "1 spiller! | Bordfodbold @ cBeach"
+      break;
+    default:
+      document.title = state.players.length + " spillere! | Bordfodbold @ cBeach";
+      break;
   }
 }
 
