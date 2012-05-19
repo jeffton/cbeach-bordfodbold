@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <meta name="viewport" content="width=device-width">
+    <title>Bordfodbold @ cBeach!</title>
+    <style type="text/css">
+    
+      body
+      {
+        text-align: center;
+      }
+      
+      body, input
+      {
+        font-family: trebuchet ms, sans-serif;
+        font-size: 1.1em;
+      }
+      
+      h1
+      { 
+        font-family: helvetica, sans-serif; 
+        text-align: center; 
+        letter-spacing: -4px;
+        font-size: 3.5em;
+      }
+      
+      #players
+      {
+        width: 12em;
+        padding: 2em 4em;
+        margin: auto;
+        border: 2px solid black;
+        background: #eee;
+        border-radius: 2em;
+        text-align: left;
+      }
+      
+      #inputFrame
+      {
+        margin: 2em;
+      }
+      
+      #name
+      {
+        width: 8em;
+      }
+      
+      #playButton
+      {
+        width: 4em;
+      }
+      
+      input
+      {
+        border: 1px solid black;
+        border-radius: .15em;
+        padding: .1em;
+      }
+      
+      label
+      {
+        color: #999;
+      }
+      
+    </style>
+  </head>
+  
+  <body>
+    <h1>Hvem vil spille bordfodbold?</h1>
+    <ol id="players">
+    </ol>
+    <div id="inputFrame">
+      <label for="name">Navn: </label><input type="text" id="name" value="" />
+      <input type="button" id="playButton" value="Mig!" />
+    </div>
+    
+    <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="scripts/socket.io.min.js"></script>
+    <script type="text/javascript">
+        
+      var socket = io.connect('http://fodbold.zno.dk:3000');
+    
+      $(document).ready(function() {
+      
+        socket.on('state', function(state) {
+          showPlayers(state);
+          updateUI(state);
+          playSound(state);
+        });
+        
+        $('#playButton').click(function() {
+          var name = $('#name').val();
+          var player = { name: name };
+          socket.emit('addPlayer', player);
+        });
+        
+        $('#name').val(window.localStorage["name"]);
+        
+        $('#name').change(function() {
+          window.localStorage["name"] = $('#name').val();
+        });
+        
+      });
+      
+      function showPlayers(state) {
+        $('#players').html('');
+        state.players.map(function(player) { $('#players').append('<li>' + htmlEscape(player.name) + '</li>'); });
+      }
+      
+      function updateUI(state) {
+        $('#playButton').prop('disabled', state.start);
+        $('#players').css('background-color', state.start ? '#bada55' : '#eee');
+      }
+      
+      function playSound(state) {
+        if (state.notify) {
+          $('#sound').trigger("play");
+        }
+      }
+      
+      function htmlEscape(text) {
+        return text.replace(/[&<>"'`]/g, function (chr) {
+          return '&#' + chr.charCodeAt(0) + ';';
+        });
+      }
+      
+    </script>
+    <audio src="notify.wav" preload="auto" id="sound" />
+  </body>
+</html>
