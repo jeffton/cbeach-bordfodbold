@@ -1,0 +1,56 @@
+body
+{
+  text-align: center;
+}
+
+body, input
+{
+  font-family: trebuchet ms, sans-serif;
+  font-size: 1.1em;
+}
+
+h1
+{ 
+  font-family: helvetica, sans-serif; 
+  text-align: center; 
+  letter-spacing: -4px;
+  font-size: 3.5em;
+}
+
+#players
+{
+  width: 12em;
+  padding: 2em 4em;
+  margin: auto;
+  border: 2px solid black;
+  background: #eee;
+  border-radius: 2em;
+  text-align: left;
+}
+
+#inputFrame
+{
+  margin: 2em;
+}
+
+#name
+{
+  width: 8em;
+}
+
+#playButton
+{
+  width: 4em;
+}
+
+input
+{
+  border: 1px solid black;
+  border-radius: .15em;
+  padding: .1em;
+}
+
+label
+{
+  color: #999;
+}
