@@ -1,4 +1,5 @@
 var socket = io.connect('http://fodbold.zno.dk:3000');
+var socket = io.connect('http://fodbold.zno.dk:3000');
 
 $(document).ready(function() {
 
@@ -40,17 +41,22 @@ function playSound(state) {
 }
 
 function setTitle(state) {
+  if (!state.notify)
+    return; // avoid blue app tab in firefox on load
+
+  var title;
   switch (state.players.length) {
     case 0: 
-      document.title = "Bordfodbold @ cBeach";
+      title = "Bordfodbold @ cBeach";
       break;
     case 1:
-      document.title = "1 spiller! | Bordfodbold @ cBeach"
+      title = "1 spiller! | Bordfodbold @ cBeach"
       break;
     default:
-      document.title = state.players.length + " spillere! | Bordfodbold @ cBeach";
+      title = state.players.length + " spillere! | Bordfodbold @ cBeach";
       break;
   }
+  document.title = title;
 }
 
 function htmlEscape(text) {
