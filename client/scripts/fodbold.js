@@ -1,5 +1,4 @@
 var socket = io.connect('http://fodbold.zno.dk:3000');
-var socket = io.connect('http://fodbold.zno.dk:3000');
 
 $(document).ready(function() {
 
